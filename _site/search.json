@@ -1,0 +1,51 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Raghav’s Blog",
+    "section": "",
+    "text": "How convolution neural networks work and why are they so efficient ?\n\n\n\n\n\n\nMachine learning\n\n\nConvolution Neural Networks\n\n\n\n\n\n\n\n\n\nMar 15, 2025\n\n\nRaghav Sharma\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "How convolution neural networks work and why are they so efficient ?",
+    "section": "",
+    "text": "I was trying to create a MNIST classification model using CNNs and NNs in PyTorch and was surprised when I looked at the difference in number of parameters between similar performing CNN and a simple NN.\nThis Multi-layered neural network had an accuracy of around 97%.\nand it used around 39,700 parameters (weights) to do that.\nThis CNN also had an accuracy of around 97%.\nand it only used around 5,274 parameters (weights) to do that.\nWhat are the reasons behind this stark difference in number of parameters? This led me to an investigative journey which deepened my understanding of how CNNs work, but before understanding CNNs, I am expecting that you understand how Neural Networks work."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "👋 Hi, I’m Raghav sharma\n🌱 I’m currently learning Machine learning\n📫 How to reach me shoot me a mail at @rs272381@gmail.com"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#how-convolutions-work",
+    "href": "posts/post-with-code/index.html#how-convolutions-work",
+    "title": "How convolution neural networks work and why are they so efficient ?",
+    "section": "How Convolutions Work",
+    "text": "How Convolutions Work\nA Convolution is like a sliding window over the data. It can be any data with a grid-like structure. It can be a time-series data which is a 1D grid or image data like in our case which can be viewed as a 2D grid.\n\nHere we have a Kernel of 3x3 (black box), which is sliding over an image of size 5x5 with padding 1 and stride of 2 (sliding 2 pixels at a time) which creates an activation map of 3x3. This is how Convolutions happen in our CNN."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#how-cnns-work",
+    "href": "posts/post-with-code/index.html#how-cnns-work",
+    "title": "How convolution neural networks work and why are they so efficient ?",
+    "section": "How CNNs Work",
+    "text": "How CNNs Work\nFor a simple neural net, we matrix multiply the input with the Parameters (weights). This means that each and every input unit interacts with each and every weight exactly once for calculating the output of a layer, which makes a Traditional neural net different from a Convolutional Neural Network.\n\\[\nW =\n\\begin{bmatrix}\nw_1 & w_2 & w_3 \\\\\nw_4 & w_5 & w_6 \\\\\nw_7 & w_8 & w_9\n\\end{bmatrix}\n\\]\n\\[\nX =\n\\begin{bmatrix}\nx_1 & x_2 & x_3 \\\\\nx_4 & x_5 & x_6 \\\\\nx_7 & x_8 & x_9\n\\end{bmatrix}\n\\]\n\\[\nX@W =\n\\begin{bmatrix}\n(x_1 w_1 + x_2 w_4 + x_3 w_7) & (x_1 w_2 + x_2 w_5 + x_3 w_8) & (x_1 w_3 + x_2 w_6 + x_3 w_9) \\\\\n(x_4 w_1 + x_5 w_4 + x_6 w_7) & (x_4 w_2 + x_5 w_5 + x_6 w_8) & (x_4 w_3 + x_5 w_6 + x_6 w_9) \\\\\n(x_7 w_1 + x_8 w_4 + x_9 w_7) & (x_7 w_2 + x_8 w_5 + x_9 w_8) & (x_7 w_3 + x_8 w_6 + x_9 w_9)\n\\end{bmatrix}\n\\]\nIf we had to represent a 2x2 kernel sliding over a 3x3 input in a matrix form, it would look something like below, and it will create an activation map which is 4x4. If you look and compare the two operations, you can see that there are two main differences:\n\nWeights are Repeating\nWeight matrix for CNNs is filled with zeros\n\n\\[\nW =\n\\begin{bmatrix}\nk_1 & k_2 & 0 & k_3 & k_4 & 0 & 0 & 0 & 0 \\\\\n0 & k_1 & k_2 & 0 & k_3 & k_4 & 0 & 0 & 0 \\\\\n0 & 0 & 0 & k_1 & k_2 & 0 & k_3 & k_4 & 0 \\\\\n0 & 0 & 0 & 0 & k_1 & k_2 & 0 & k_3 & k_4\n\\end{bmatrix}\n\\] \\[\nX=\n\\begin{bmatrix}\nx_1 \\\\ x_2 \\\\ x_3 \\\\ x_4 \\\\ x_5 \\\\ x_6 \\\\ x_7 \\\\ x_8 \\\\ x_9\n\\end{bmatrix}\n\\]\n\\[\nX@W =\n\\begin{bmatrix}\nk_1 x_1 + k_2 x_2 + k_3 x_4 + k_4 x_5 \\\\\nk_1 x_2 + k_2 x_3 + k_3 x_5 + k_4 x_6 \\\\\nk_1 x_4 + k_2 x_5 + k_3 x_7 + k_4 x_8 \\\\\nk_1 x_5 + k_2 x_6 + k_3 x_8 + k_4 x_9\n\\end{bmatrix}\n\\]\nLet’s explore these differences further.\nRepeating Weights (parameter sharing) - It is one of the reasons behind the efficiency of CNNs. In Dense matrix multiplication, input gets multiplied with a parameter exactly once to create an output, which is not the case in Convolutional Neural Networks. The kernel slides over the input, which means that each parameter of the kernel is used at every position in the input. Therefore, rather than learning different parameters for every position, we only learn one set of weights.\nWeight Matrix filled with zeros (sparse representation) - The size of the kernel is smaller than the size of the input. Therefore, when we represent the convolutions in a matrix multiplication operation, it results in a matrix which is filled with zeros. One might think that because of all these zeros we might be losing some features of the input, especially in strided convolutions, which is not optimal. But if we look at the diagram below, you can see that is not the case. With X being our input, h being a shallow layer, and g being a deep layer, you can see that the deeper layer is connected to almost all of the image’s features."
+  },
+  {
+    "objectID": "posts/post-with-code/index.html#understanding-the-code",
+    "href": "posts/post-with-code/index.html#understanding-the-code",
+    "title": "How convolution neural networks work and why are they so efficient ?",
+    "section": "Understanding the Code",
+    "text": "Understanding the Code\nSo what does it mean when we are writing this code?\nconv(1, 4)\nThis function will receive a 28x28 image (ignoring batch_size) with one channel (since it’s black and white) and the output of this layer after using ReLU will be 4 different activation maps created by 4 different kernels. The size of the activation maps will be 14x14 (because of stride=2), and the same happens till the last layer which outputs the probability distribution for each digit from 0-9. We are not using ReLU in the last layer as we are using cross_entropy loss function which has its own softmax function and expects raw logits.\nThis layer has 1 input channel, 4 output channels, and a 3×3 kernel. Therefore, the total parameters of this layer will be:\n1×4×3×3 = 36 parameters \nConfirming our calculations by fetching the parameters of the first layer:\nconv1 = simple_cnn[0][0]\nconv1.weight\nParameter containing:\ntensor([[[[ 0.2922,  0.3600,  0.2967],\n          [-0.0044,  0.0414, -0.0608],\n          [ 0.1634, -0.0885,  0.2995]]],\n\n\n        [[[-0.2102,  0.3089, -0.1890],\n          [-0.1660,  0.1155,  0.3302],\n          [-0.0576,  0.0286, -0.2662]]],\n\n\n        [[[-0.3527, -0.0673,  0.2557],\n          [-0.1725, -0.3262, -0.3382],\n          [-0.1993, -0.3218, -0.5433]]],\n\n\n        [[[ 0.3354,  0.4143,  0.6307],\n          [ 0.8166,  1.2680,  0.7831],\n          [ 0.5499,  1.0570,  1.0479]]]], device='cuda:0', requires_grad=True)\nAs you can see, the first layer has 36 parameters, just as we calculated. Each 3x3 matrix that you can see in the output is a kernel containing different parameters which will slide over our input image.\n\nReferences\nFast.ai Course Howard, J. (n.d.). Lesson 15: Deep learning for coders. Fast.ai. Retrieved March 15, 2025, from https://course.fast.ai/Lessons/lesson15.html\nDeep Learning Book Goodfellow, I., Bengio, Y., & Courville, A. (2016). Convolutional networks. In Deep learning (pp. 326-366). MIT Press. https://www.deeplearningbook.org/contents/convnets.html\nMedium Article Basart, J. (2018, July 9). CNNs from different viewpoints. Medium - Impact AI. https://medium.com/impactai/cnns-from-different-viewpoints-fab7f52d159c"
+  }
+]
