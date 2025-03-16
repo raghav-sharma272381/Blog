@@ -200,7 +200,7 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="TWFjaGluZSUyMGxlYXJuaW5nJTJDQ29udm9sdXRpb24lMjBOZXVyYWwlMjBOZXR3b3Jrcw==" data-listing-date-sort="1742022000000" data-listing-file-modified-sort="1742094152377" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1314">
+<div class="quarto-post image-right" data-index="0" data-categories="TWFjaGluZSUyMGxlYXJuaW5nJTJDQ29udm9sdXRpb24lMjBOZXVyYWwlMjBOZXR3b3Jrcw==" data-listing-date-sort="1742022000000" data-listing-file-modified-sort="1742154489127" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1600">
 <div class="thumbnail">
 <p><a href="./posts/ConvolutionNeuralNetworks/index.html" class="no-external"></a></p><a href="./posts/ConvolutionNeuralNetworks/index.html" class="no-external">
 <p><img loading="lazy" src="./posts/ConvolutionNeuralNetworks/image.png" class="thumbnail-image"></p>
@@ -331,7 +331,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/raghav-sharma272381\.github\.io\/Blog\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

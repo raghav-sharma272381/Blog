@@ -45,7 +45,40 @@ A Convolution is like a sliding window over the data. It can be any data with a 
 <img alt="A 3×3 kernel with 5×5 input, stride-2 convolution, and 1 pixel of padding" width="774" caption="A 3×3 kernel with 5×5 input, stride-2 convolution, and 1 pixel of padding (courtesy of Vincent Dumoulin and Francesco Visin)" id="three_by_five_conv" src="att_00030.png">
 
 
-Here we have a Kernel of 3x3 (black box), which is sliding over an image of size 5x5 with padding 1 and stride of 2 (sliding 2 pixels at a time) which creates an activation map of 3x3. This is how Convolutions happen in our CNN. 
+Here we have a Kernel of 3x3 (black box), which is sliding over an image of size 5x5 with padding 1 and stride of 2 (sliding 2 pixels at a time) which creates an activation map of 3x3 .  This is how Convolutions happen in our CNN. 
+
+
+### What happens when the kernel slides?
+
+When the kernel slides over the input, it performs an element-wise multiplication of its values with the corresponding values in the input, followed by summation of all these products. This single numerical result becomes one pixel in the output activation map.
+
+For example, if we have a 3x3 kernel with values:
+```
+[1, 0, -1]
+[2, 0, -2]
+[1, 0, -1]
+```
+And it overlaps with a 3x3 region of our input image with pixel values:
+```
+[100, 150, 200]
+[110, 160, 210]
+[120, 170, 220]
+```
+
+The resulting single value for that position in the activation map would be:
+```
+(1×100) + (0×150) + (-1×200) + (2×110) + (0×160) + (-2×210) + (1×120) + (0×170) + (-1×220)
+= 100 - 200 + 220 - 420 + 120 - 220
+= -400
+```
+
+This calculation is repeated as the kernel slides to each position, resulting in a new activation map that highlights specific features of the original image, depending on the kernel's values. Different kernels detect different features - some might detect vertical edges, others horizontal edges, and so on.
+
+### Handling the edges with padding
+
+In the image, you can see the kernel going off the edge of the 5x5 input. This is where padding comes in. The 1-pixel padding (light blue border) creates a buffer around the original image, allowing the kernel to process edge pixels properly. Without padding, we would lose information at the edges, and our activation map would be smaller than we might want.
+
+When the kernel overlaps with padding areas, those padding values (typically zeros) are included in the calculation. For a kernel with padding "same" (as used in our code with `padding=ks//2`), the output activation map will have the same spatial dimensions as the input, except for any reduction caused by the stride. 
 
 ## How CNNs Work
 
