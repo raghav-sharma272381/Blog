@@ -117,7 +117,7 @@ Let's explore these differences further.
 
 **Weight Matrix filled with zeros (sparse representation)** - The size of the kernel is smaller than the size of the input. Therefore, when we represent the convolutions in a matrix multiplication operation, it results in a matrix which is filled with zeros. One might think that because of all these zeros we might be losing some features of the input, especially in strided convolutions, which is not optimal. But if we look at the diagram below, you can see that is not the case. With X being our input, h being a shallow layer, and g being a deep layer, you can see that the deeper layer is connected to almost all of the image's features. 
 
-<img alt="diagram for sparse connection taken from Deep Learning book by Ian Goodfellow" width="774" caption="diagram for sparse connection taken from Deep Learning book by Ian Goodfellow" id="sparceconnection" src="sparceconectivity.png">
+<img alt="diagram for sparse connection taken from Deep Learning book by Ian Goodfellow" width="774" caption="diagram for sparse connection taken from Deep Learning book by Ian Goodfellow" id="sparceconnection" src="sparceconectivity.jpg">
 
 ## Understanding the Code 
 

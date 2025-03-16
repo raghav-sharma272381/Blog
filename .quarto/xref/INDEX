@@ -13,5 +13,8 @@
   },
   "md files/cnn.md": {
     "cnn.html": "201495b1"
+  },
+  "posts/ConvolutionNeuralNetworks/index.qmd": {
+    "index.html": "6474ebd5"
   }
 }
