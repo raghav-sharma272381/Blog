@@ -237,7 +237,29 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="how-convolutions-work">How Convolutions Work</h2>
 <p>A Convolution is like a sliding window over the data. It can be any data with a grid-like structure. It can be a time-series data which is a 1D grid or image data like in our case which can be viewed as a 2D grid.</p>
 <p><img alt="A 3×3 kernel with 5×5 input, stride-2 convolution, and 1 pixel of padding" width="774" caption="A 3×3 kernel with 5×5 input, stride-2 convolution, and 1 pixel of padding (courtesy of Vincent Dumoulin and Francesco Visin)" id="three_by_five_conv" src="att_00030.png"></p>
-<p>Here we have a Kernel of 3x3 (black box), which is sliding over an image of size 5x5 with padding 1 and stride of 2 (sliding 2 pixels at a time) which creates an activation map of 3x3. This is how Convolutions happen in our CNN.</p>
+<p>Here we have a Kernel of 3x3 (black box), which is sliding over an image of size 5x5 with padding 1 and stride of 2 (sliding 2 pixels at a time) which creates an activation map of 3x3 . This is how Convolutions happen in our CNN.</p>
+<section id="what-happens-when-the-kernel-slides" class="level3">
+<h3 class="anchored" data-anchor-id="what-happens-when-the-kernel-slides">What happens when the kernel slides?</h3>
+<p>When the kernel slides over the input, it performs an element-wise multiplication of its values with the corresponding values in the input, followed by summation of all these products. This single numerical result becomes one pixel in the output activation map.</p>
+<p>For example, if we have a 3x3 kernel with values:</p>
+<pre><code>[1, 0, -1]
+[2, 0, -2]
+[1, 0, -1]</code></pre>
+<p>And it overlaps with a 3x3 region of our input image with pixel values:</p>
+<pre><code>[100, 150, 200]
+[110, 160, 210]
+[120, 170, 220]</code></pre>
+<p>The resulting single value for that position in the activation map would be:</p>
+<pre><code>(1×100) + (0×150) + (-1×200) + (2×110) + (0×160) + (-2×210) + (1×120) + (0×170) + (-1×220)
+= 100 - 200 + 220 - 420 + 120 - 220
+= -400</code></pre>
+<p>This calculation is repeated as the kernel slides to each position, resulting in a new activation map that highlights specific features of the original image, depending on the kernel’s values. Different kernels detect different features - some might detect vertical edges, others horizontal edges, and so on.</p>
+</section>
+<section id="handling-the-edges-with-padding" class="level3">
+<h3 class="anchored" data-anchor-id="handling-the-edges-with-padding">Handling the edges with padding</h3>
+<p>In the image, you can see the kernel going off the edge of the 5x5 input. This is where padding comes in. The 1-pixel padding (light blue border) creates a buffer around the original image, allowing the kernel to process edge pixels properly. Without padding, we would lose information at the edges, and our activation map would be smaller than we might want.</p>
+<p>When the kernel overlaps with padding areas, those padding values (typically zeros) are included in the calculation. For a kernel with padding “same” (as used in our code with <code>padding=ks//2</code>), the output activation map will have the same spatial dimensions as the input, except for any reduction caused by the stride.</p>
+</section>
 </section>
 <section id="how-cnns-work" class="level2">
 <h2 class="anchored" data-anchor-id="how-cnns-work">How CNNs Work</h2>
@@ -302,13 +324,13 @@ k_1 x_5 + k_2 x_6 + k_3 x_8 + k_4 x_9
 <section id="understanding-the-code" class="level2">
 <h2 class="anchored" data-anchor-id="understanding-the-code">Understanding the Code</h2>
 <p>So what does it mean when we are writing this code?</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>conv(<span class="dv">1</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>conv(<span class="dv">1</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This function will receive a 28x28 image (ignoring batch_size) with one channel (since it’s black and white) and the output of this layer after using ReLU will be 4 different activation maps created by 4 different kernels. The size of the activation maps will be 14x14 (because of stride=2), and the same happens till the last layer which outputs the probability distribution for each digit from 0-9. We are not using ReLU in the last layer as we are using cross_entropy loss function which has its own softmax function and expects raw logits.</p>
 <p>This layer has 1 input channel, 4 output channels, and a 3×3 kernel. Therefore, the total parameters of this layer will be:</p>
 <pre><code>1×4×3×3 = 36 parameters </code></pre>
 <p>Confirming our calculations by fetching the parameters of the first layer:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>conv1 <span class="op">=</span> simple_cnn[<span class="dv">0</span>][<span class="dv">0</span>]</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>conv1.weight</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>conv1 <span class="op">=</span> simple_cnn[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>conv1.weight</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <pre><code>Parameter containing:
 tensor([[[[ 0.2922,  0.3600,  0.2967],
           [-0.0044,  0.0414, -0.0608],
